@@ -128,7 +128,7 @@ class PoisoningAttackSVM(PoisoningAttackWhiteBox):
             train_data = np.vstack([train_data, poison])
             train_labels = np.vstack([train_labels, attack_label])
             
-         print("after generate attack")
+        print("after generate attack")
 
         x_adv = np.array(all_poison).reshape((num_poison, num_features))
         targeted = y is not None

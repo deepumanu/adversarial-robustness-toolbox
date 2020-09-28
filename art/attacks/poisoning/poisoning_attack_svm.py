@@ -61,7 +61,7 @@ class PoisoningAttackSVM(PoisoningAttackWhiteBox):
         y_train: Optional[np.ndarray] = None,
         x_val: Optional[np.ndarray] = None,
         y_val: Optional[np.ndarray] = None,
-        max_iter: int = 10,
+        max_iter: int = 1,
     ) -> None:
         """
         Initialize an SVM poisoning attack.
@@ -111,6 +111,7 @@ class PoisoningAttackSVM(PoisoningAttackWhiteBox):
         else:
             y_attack = np.copy(y)
 
+        print("in poison")
         num_poison = len(x)
         if num_poison == 0:
             raise ValueError("Must input at least one poison point")

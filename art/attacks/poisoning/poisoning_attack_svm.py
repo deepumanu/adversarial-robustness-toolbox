@@ -61,7 +61,7 @@ class PoisoningAttackSVM(PoisoningAttackWhiteBox):
         y_train: Optional[np.ndarray] = None,
         x_val: Optional[np.ndarray] = None,
         y_val: Optional[np.ndarray] = None,
-        max_iter: int = 100,
+        max_iter: int = 10,
     ) -> None:
         """
         Initialize an SVM poisoning attack.
@@ -121,6 +121,7 @@ class PoisoningAttackSVM(PoisoningAttackWhiteBox):
         all_poison = []
 
         for attack_point, attack_label in tqdm(zip(x, y_attack), desc="SVM poisoning"):
+            print("in for loop")
             poison = self.generate_attack_point(attack_point, attack_label)
             all_poison.append(poison)
             train_data = np.vstack([train_data, poison])
@@ -166,9 +167,12 @@ class PoisoningAttackSVM(PoisoningAttackWhiteBox):
         k_values = np.where(-var_g > 0)
         new_p = np.sum(var_g[k_values])
         old_p = np.copy(new_p)
+        print("new_p", new_p)
+        print("old_p", old_p)
         i = 0
-
+        print("before while loop")
         while new_p - old_p < self.eps and i < self.max_iter:
+            print("in while loop", i)
             old_p = new_p
             poisoned_input = np.vstack([self.x_train, attack_point])
             poisoned_labels = np.append(y_t, y_a)
@@ -218,6 +222,7 @@ class PoisoningAttackSVM(PoisoningAttackWhiteBox):
         grad = np.zeros((1, self.x_val.shape[1]))
         support_vectors = model.support_vectors_
         num_support = len(support_vectors)
+        print("before predict sign")
         support_labels = np.expand_dims(self.predict_sign(support_vectors), axis=1)
         c_idx = np.isin(support_vectors, attack_point).all(axis=1)
 

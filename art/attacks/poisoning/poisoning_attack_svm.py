@@ -111,7 +111,7 @@ class PoisoningAttackSVM(PoisoningAttackWhiteBox):
         else:
             y_attack = np.copy(y)
 
-        #print("in poison")
+        print("in poison")
         num_poison = len(x)
         if num_poison == 0:
             raise ValueError("Must input at least one poison point")
@@ -122,13 +122,13 @@ class PoisoningAttackSVM(PoisoningAttackWhiteBox):
         all_poison = []
 
         for attack_point, attack_label in tqdm(zip(x, y_attack), desc="SVM poisoning"):
-            #print("in for loop")
+            print("in for loop")
             poison = self.generate_attack_point(attack_point, attack_label)
             all_poison.append(poison)
             train_data = np.vstack([train_data, poison])
             train_labels = np.vstack([train_labels, attack_label])
             
-        #print("after generate attack")
+        print("after generate attack")
 
         x_adv = np.array(all_poison).reshape((num_poison, num_features))
         targeted = y is not None
@@ -205,7 +205,7 @@ class PoisoningAttackSVM(PoisoningAttackWhiteBox):
         """
         # pylint: disable=W0212
         preds = self.estimator.model.predict(vec)
-        #print("afterpreds")
+        print("afterpreds")
         return 2 * preds - 1
 
     def attack_gradient(self, attack_point: np.ndarray, tol: float = 0.0001) -> np.ndarray:

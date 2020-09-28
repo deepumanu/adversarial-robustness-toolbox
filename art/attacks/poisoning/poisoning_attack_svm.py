@@ -111,7 +111,7 @@ class PoisoningAttackSVM(PoisoningAttackWhiteBox):
         else:
             y_attack = np.copy(y)
 
-        print("in poison")
+        #print("in poison")
         num_poison = len(x)
         if num_poison == 0:
             raise ValueError("Must input at least one poison point")
@@ -122,13 +122,13 @@ class PoisoningAttackSVM(PoisoningAttackWhiteBox):
         all_poison = []
 
         for attack_point, attack_label in tqdm(zip(x, y_attack), desc="SVM poisoning"):
-            print("in for loop")
+            #print("in for loop")
             poison = self.generate_attack_point(attack_point, attack_label)
             all_poison.append(poison)
             train_data = np.vstack([train_data, poison])
             train_labels = np.vstack([train_labels, attack_label])
             
-        print("after generate attack")
+        #print("after generate attack")
 
         x_adv = np.array(all_poison).reshape((num_poison, num_features))
         targeted = y is not None
@@ -170,12 +170,12 @@ class PoisoningAttackSVM(PoisoningAttackWhiteBox):
         k_values = np.where(-var_g > 0)
         new_p = np.sum(var_g[k_values])
         old_p = np.copy(new_p)
-        print("new_p", new_p)
-        print("old_p", old_p)
+        #print("new_p", new_p)
+        #print("old_p", old_p)
         i = 0
-        print("before while loop")
+        #print("before while loop")
         while new_p - old_p < self.eps and i < self.max_iter:
-            print("in while loop", i)
+            #print("in while loop", i)
             old_p = new_p
             poisoned_input = np.vstack([self.x_train, attack_point])
             poisoned_labels = np.append(y_t, y_a)
@@ -205,7 +205,7 @@ class PoisoningAttackSVM(PoisoningAttackWhiteBox):
         """
         # pylint: disable=W0212
         preds = self.estimator.model.predict(vec)
-        print("afterpreds")
+        #print("afterpreds")
         return 2 * preds - 1
 
     def attack_gradient(self, attack_point: np.ndarray, tol: float = 0.0001) -> np.ndarray:
@@ -226,10 +226,10 @@ class PoisoningAttackSVM(PoisoningAttackWhiteBox):
         grad = np.zeros((1, self.x_val.shape[1]))
         support_vectors = model.support_vectors_
         num_support = len(support_vectors)
-        print("before predict sign")
+        #print("before predict sign")
         support_labels = np.expand_dims(self.predict_sign(support_vectors), axis=1)
         c_idx = np.isin(support_vectors, attack_point).all(axis=1)
-        print("after predict")
+        #print("after predict")
         if not c_idx.any():
             return grad
 

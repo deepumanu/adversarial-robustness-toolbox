@@ -253,6 +253,6 @@ class PoisoningAttackSVM(PoisoningAttackWhiteBox):
             )
             d_q_kc = art_model._kernel_grad(x_k, attack_point)
             grad += (np.matmul(m_k, d_q_sc) + d_q_kc) * alpha_c
-         print(grad)
+        print(grad)
 
         return grad

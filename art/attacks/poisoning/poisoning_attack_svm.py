@@ -226,7 +226,7 @@ class PoisoningAttackSVM(PoisoningAttackWhiteBox):
         grad = np.zeros((1, self.x_val.shape[1]))
         support_vectors = model.support_vectors_
         num_support = len(support_vectors)
-        #print("before predict sign")
+        print("before predict sign")
         support_labels = np.expand_dims(self.predict_sign(support_vectors), axis=1)
         c_idx = np.isin(support_vectors, attack_point).all(axis=1)
         #print("after predict")

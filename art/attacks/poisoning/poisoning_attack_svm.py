@@ -16,7 +16,7 @@
 # TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 """
-This module implements poisoning attacks on Support Vector Machines.
+This module implements poisoning s on Support Vector Machines.
 """
 from __future__ import absolute_import, division, print_function, unicode_literals
 
@@ -127,6 +127,8 @@ class PoisoningAttackSVM(PoisoningAttackWhiteBox):
             all_poison.append(poison)
             train_data = np.vstack([train_data, poison])
             train_labels = np.vstack([train_labels, attack_label])
+            
+         print("after generate attack")
 
         x_adv = np.array(all_poison).reshape((num_poison, num_features))
         targeted = y is not None
@@ -203,6 +205,7 @@ class PoisoningAttackSVM(PoisoningAttackWhiteBox):
         """
         # pylint: disable=W0212
         preds = self.estimator.model.predict(vec)
+        print("afterpreds")
         return 2 * preds - 1
 
     def attack_gradient(self, attack_point: np.ndarray, tol: float = 0.0001) -> np.ndarray:
@@ -226,7 +229,7 @@ class PoisoningAttackSVM(PoisoningAttackWhiteBox):
         print("before predict sign")
         support_labels = np.expand_dims(self.predict_sign(support_vectors), axis=1)
         c_idx = np.isin(support_vectors, attack_point).all(axis=1)
-
+        print("after predict")
         if not c_idx.any():
             return grad
 
@@ -239,6 +242,7 @@ class PoisoningAttackSVM(PoisoningAttackWhiteBox):
         zeta = np.matmul(qss_inv, support_labels)
         zeta = np.matmul(support_labels.T, zeta)
         nu_k = np.matmul(qss_inv, support_labels)
+        print("in attack before for")
         for x_k, y_k in zip(self.x_val, self.y_val):
             y_k = 2 * np.expand_dims(np.argmax(y_k), axis=0) - 1
 
@@ -249,5 +253,6 @@ class PoisoningAttackSVM(PoisoningAttackWhiteBox):
             )
             d_q_kc = art_model._kernel_grad(x_k, attack_point)
             grad += (np.matmul(m_k, d_q_sc) + d_q_kc) * alpha_c
+         print(grad)
 
         return grad

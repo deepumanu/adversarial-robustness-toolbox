@@ -88,6 +88,7 @@ class PoisoningAttackSVM(PoisoningAttackWhiteBox):
             print("i am in instance")
             print(self.estimator.model)
             self.estimator.fit(x_train, y_train)
+            print(self.estimator.fit(x_train, y_train))
         elif not isinstance(self.estimator.model, SVC):
             raise NotImplementedError("Model type '{}' not yet supported".format(type(self.estimator.model)))
 

@@ -85,6 +85,8 @@ class PoisoningAttackSVM(PoisoningAttackWhiteBox):
             self._estimator = ScikitlearnSVC(
                 model=SVC(C=self.estimator.model.C, kernel="linear"), clip_values=self.estimator.clip_values,
             )
+            print("i am in instance")
+            print(self.estimator.model)
             self.estimator.fit(x_train, y_train)
         elif not isinstance(self.estimator.model, SVC):
             raise NotImplementedError("Model type '{}' not yet supported".format(type(self.estimator.model)))
